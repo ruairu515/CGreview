@@ -1,13 +1,42 @@
 //work_title読込
 //(現状:PDOのprepareメソッドとbinvalueメソッドを使いデータを指定している)
 //(課題：webページ上で指定したtitleを取得する)
+// $.ajax({
+// 	type: 'POST',
+// 	url: 'index_db_workid.php',
+// 	dataType: 'html',
+// })
+// .done(function(data, status, jqXHR){
+// 	$("#work_read").html(data);
+// 	console.log(data);
+// })
+// .fail(function(jqXHR, status, error){
+// 	 $("#ajax_result").html("エラーです");
+// 	 console.log(status);
+// })
+// .always(function(jqXHR, status){
+// 	console.log(status);
+// });
+
+
+
+
+
+
+
+// 配列で受け取る 参考url http://www.renowan.com/blog/?p=707
 $.ajax({
 	type: 'POST',
-	url: 'index_db_work.php',
-	dataType: 'html',
+	url: 'index_db_workid.php',
+	dataType: 'json',
 })
 .done(function(data, status, jqXHR){
 	$("#work_read").html(data);
+	console.log(data);
+	var a = data['title'];
+	console.log(a);
+	// var obj = eval("("+data+")");
+	// console.log(obj);
 })
 .fail(function(jqXHR, status, error){
 	 $("#ajax_result").html("エラーです");
@@ -16,6 +45,10 @@ $.ajax({
 .always(function(jqXHR, status){
 	console.log(status);
 });
+
+
+
+
 
 
 
@@ -227,7 +260,7 @@ function test(){
 
 	$.ajax({
 		type: 'POST',
-		url: 'index_db_test.php',
+		url: 'index_db_partreviewinfo.php',
 		data:{
 			word1:word_val1,
 			word2:word_val2,
