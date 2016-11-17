@@ -22,15 +22,19 @@
 <div id = "work_title">
   <h1 id="work_read">タイトル読込</h1>
 </div>
-
-
 <!-- 課題：DBから作品データ読込 -->    
+
 <div id = "work_screen">
+
   <script>
-    var DB_jsonfile = "cycle2color.js"//DBデータ仮
-    var arr = Domdata(DB_jsonfile,600,400);
+
+    var arr = Domdata(DB_jsonfile,width1,height1,0);
   </script>
+  
+
 </div>
+  <input type = "button" value = "material" onclick = "aaa(1)">
+    <input type = "button" value = "wireframe" onclick = "aaa(2)">
 
 <!--    課題：星ライブラリの送信、日付の情報送信 -->
   <div id = "review_table"></div>
@@ -51,7 +55,7 @@
       </tr>
     <table>
             <input type="reset" value="クリア" />
-          <!--   <input type="button" value="投稿" onclick="review_list()"> -->
+            <!-- <input type="button" value="投稿" onclick="review_list()"> -->
             <input type="submit" id="submit_bt" value="Submit" />
     </form>
 
@@ -61,9 +65,13 @@
 
 <!-- 課題：DBからレビューデータ読込 -->
   <div id = "review_list"></div>
-    <hr/><h3>作品レビュー</h3><hr/>
+    <hr/>
+    <h3>partreview</h3>
+    <input type = "button" value="更新" onclick="review_get()"> 
+    <hr/>
+
      <div id = "answer1"></div>
-    <script>
+ <!--    <script>
       if(camera_position == "x＋z＋"){
       } 
       else if(camera_position == "x＋zー"){
@@ -77,7 +85,7 @@
       var DB_name = "矢嶋拓弥";//DBデータ仮定
       var DB_review = "いいね！";//DBデータ仮定
       review_list(DB_name, DB_review);
-    </script>
+    </script> -->
    
 
 </body>

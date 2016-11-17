@@ -4,8 +4,6 @@ $dsn = 'mysql:dbname=CGreview;host=localhost;charset=utf8';
 $user = 'root';
 $password = 'root';
 
-$options = array();
-
 try{
 //データーベースに接続
     $pdo = new PDO($dsn, $user, $password,$options);
@@ -17,26 +15,17 @@ try{
 
 
 
-
-
-
-
-
     // // prepareメソッドでSQLをセット
-    // $stmt = $pdo->prepare("select title from workinfo where workid  = ? ");
-    // // and studentid = ?
-    // //bindValueメソッドでパラメータをセット
-    // $stmt->bindValue(1,3);
-    // // $stmt->bindValue(2,3);
-    // //executeでクエリを実行
-    // $stmt->execute();
-    // //結果を表示
-
-    // $result = $stmt->fetch();
-    // echo $result[0];
-
-
-
+    $stmt = $pdo->prepare("select title from workinfo where workid  = ? ");
+    // and studentid = ?
+    //bindValueメソッドでパラメータをセット
+    $stmt->bindValue(1,3);
+    // $stmt->bindValue(2,3);
+    //executeでクエリを実行
+    $stmt->execute();
+    //結果を表示
+    $result = $stmt->fetch();
+    echo $result[0];
 
 
 
@@ -47,20 +36,20 @@ try{
     // データベースに接続
     // $db = new PDO($dsn, $username, $password, $options);
 
-    // 実行するqueryの作成（testテーブルの全データ取得）
-    $query = "SELECT * FROM workinfo";
-    //クエリを実行
-    $res = $pdo->query($query);
-    //取得したデータを全てフェッチする
-    $data = $res->fetch(PDO::FETCH_ASSOC);
-    //データを表示する
-    // print($data[title]);
-    // while($result = $res->fetch(PDO::FETCH_ASSOC)){
-        // print($result['workid']);
-        // print($result['filename'].'<br>');
-    // }
+    // // 実行するqueryの作成（testテーブルの全データ取得）
+    // $query = "SELECT * FROM workinfo";
+    // //クエリを実行
+    // $res = $pdo->query($query);
+    // //取得したデータを全てフェッチする
+    // $data = $res->fetch(PDO::FETCH_ASSOC);
+    // //データを表示する
+    // // print($data[title]);
+    // // while($result = $res->fetch(PDO::FETCH_ASSOC)){
+    //     // print($result['workid']);
+    //     // print($result['filename'].'<br>');
+    // // }
 
-    echo json_encode($data);
+    // echo json_encode($data);
 
 
 

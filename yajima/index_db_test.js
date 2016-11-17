@@ -1,14 +1,42 @@
-//work_title読込
-//(現状:PDOのprepareメソッドとbinvalueメソッドを使いデータを指定している)
-//(課題：webページ上で指定したtitleを取得する)
+// work_title読込
+// (現状:PDOのprepareメソッドとbinvalueメソッドを使いデータを指定している)
+// (課題：webページ上で指定したtitleを取得する)
+$.ajax({
+	type: 'POST',
+	url: 'index_db_workid.php',
+	dataType: 'html',
+})
+.done(function(data, status, jqXHR){
+	$("#work_read").html(data);
+	console.log(data);
+})
+.fail(function(jqXHR, status, error){
+	 $("#ajax_result").html("エラーです");
+	 console.log(status);
+})
+.always(function(jqXHR, status){
+	console.log(status);
+});
+
+
+
+
+
+
+
+// 配列で受け取る 参考url http://www.renowan.com/blog/?p=707
 // $.ajax({
 // 	type: 'POST',
 // 	url: 'index_db_workid.php',
-// 	dataType: 'html',
+// 	dataType: 'json',
 // })
 // .done(function(data, status, jqXHR){
 // 	$("#work_read").html(data);
 // 	console.log(data);
+// 	var a = data['title'];
+// 	console.log(a);
+// 	// var obj = eval("("+data+")");
+// 	// console.log(obj);
 // })
 // .fail(function(jqXHR, status, error){
 // 	 $("#ajax_result").html("エラーです");
@@ -19,32 +47,6 @@
 // });
 
 
-
-
-
-
-
-// 配列で受け取る 参考url http://www.renowan.com/blog/?p=707
-$.ajax({
-	type: 'POST',
-	url: 'index_db_workid.php',
-	dataType: 'json',
-})
-.done(function(data, status, jqXHR){
-	$("#work_read").html(data);
-	console.log(data);
-	var a = data['title'];
-	console.log(a);
-	// var obj = eval("("+data+")");
-	// console.log(obj);
-})
-.fail(function(jqXHR, status, error){
-	 $("#ajax_result").html("エラーです");
-	 console.log(status);
-})
-.always(function(jqXHR, status){
-	console.log(status);
-});
 
 
 
@@ -119,10 +121,91 @@ $.ajax({
 
 
 
-
 var camera_position;
+var requestId;
+
+var width1 = 600;
+var height1 = 400;
+
+var DB_jsonfile = "cycle2color.js"//DBデータ仮
+
+function aaa(bb){
+	window.cancelAnimationFrame(requestId); 
+
+	//要素切り替え
+	var id = document.getElementById("work_screen");
+	var newElement = document.createElement("a");
+	var oldElement = document.getElementById("three_id");
+	id.replaceChild(newElement, oldElement);
+
+	//要素削除ができてない
+	//  var dom_obj = document.getElementById(work_screen);
+    // console.log("a");
+    // var dom_obj_parent = dom_obj.parentNode;
+    //  console.log("b");
+    // dom_obj_parent.removeChild(dom_obj);
+
+	Domdata(DB_jsonfile,width1,height1,bb)
+}
+
+
+
+
+
 //関数_作品表示
-function Domdata(data2, whith2, height2){
+function Domdata(data2, whith2, height2,mate_switch){
+
+	//scene
+	var scene = new THREE.Scene();
+	
+	//Cube
+	var geometry = new THREE.CubeGeometry(2000,500,4000);
+	//ワイヤー切り替え
+	if(mate_switch == 0){
+		//マテリアル指定
+		var material = new THREE.MeshLambertMaterial({color : 'silver'});
+	}else if(mate_switch == 1){
+		//マテリアル指定
+		var material = new THREE.MeshLambertMaterial({color : 'silver'});
+	}else if(mate_switch == 2){
+		//ワイヤーフレーム指定
+		var material = new THREE.MeshPhongMaterial({                              
+       		color: 0x990000, //球の色
+       		wireframe: true //ワイヤーフレーム有効
+		});
+	}
+	var cube = new THREE.Mesh(geometry,material);
+	cube.position.set(0, -250, 0);
+	scene.add(cube);
+
+	// JSONObj
+	var jsonObj,faceMaterial;
+	loader = new THREE.JSONLoader();
+	loader.load(data2, function( geometry, materials ) {
+	//ワイヤー切り替え
+	if(mate_switch == 0){
+		//マテリアル指定
+		faceMaterial = new THREE.MeshFaceMaterial( materials );
+	}else if(mate_switch == 1){
+		//マテリアル指定
+		faceMaterial = new THREE.MeshFaceMaterial( materials );
+	}else if(mate_switch == 2){
+		//ワイヤーフレーム指定
+		var faceMaterial = new THREE.MeshPhongMaterial({                              
+       		color: 0x990000, //球の色
+       		wireframe: true //ワイヤーフレーム有効
+		});
+	}
+	for(var i = 0, len = materials.length; i < len; i++){
+	    materials[i].side = THREE.DoubleSide;
+	}
+	jsonObj = new THREE.Mesh( geometry, faceMaterial );
+	jsonObj.position.set( 50, -25, 0);
+	jsonObj.scale.set( 15, 15, 15 );
+	scene.add( jsonObj );
+	});
+
+	//Dom作成
 	var id = document.getElementById("work_screen");
 	var div = document.createElement("div");
 
@@ -134,29 +217,8 @@ function Domdata(data2, whith2, height2){
 	var width = whith2;
 	var height = height2;
 
-	//scene
-	var scene = new THREE.Scene();
 
-	//Cube
-	var geometry = new THREE.CubeGeometry(2000,500,4000);
-	var material = new THREE.MeshLambertMaterial({color : 'silver'});
-	var cube = new THREE.Mesh(geometry,material);
-	cube.position.set(0, -250, 0);
-	scene.add(cube);
 
-	//JSONObj
-	var jsonObj,faceMaterial;
-	loader = new THREE.JSONLoader();
-	loader.load(data2, function ( geometry, materials ) {
-	faceMaterial = new THREE.MeshFaceMaterial( materials );
-	for(var i = 0, len = materials.length; i < len; i++){
-	    materials[i].side = THREE.DoubleSide;
-	}
-	jsonObj = new THREE.Mesh( geometry, faceMaterial );
-	jsonObj.position.set( 50, -25, 0);
-	jsonObj.scale.set( 15, 15, 15 );
-	scene.add( jsonObj );
-	});
 
 	//light
 	var color = 'white';
@@ -183,7 +245,7 @@ function Domdata(data2, whith2, height2){
 	convert();
 	
 
-	var requestId;
+	
 	function convert(){
 		
 		var controls = new THREE.OrbitControls(camera,renderer.domElement);
@@ -230,6 +292,14 @@ function Domdata(data2, whith2, height2){
 }
 
 
+
+
+
+
+
+
+
+
 //関数＿form_ajax送信
 $(document).ready(function(){
 	$("#submit_bt").click(function(event){
@@ -249,7 +319,6 @@ $(document).ready(function(){
     	name: 'hoge',
     	value: camera_position
   　　　}).appendTo('#target_id');
-		
 		test();
 	});
 });
@@ -286,6 +355,34 @@ function test(){
 }
 
 
+
+//データベースから値取得
+function review_get(){
+	$.ajax({
+		type: 'POST',
+		url: 'index_db_partreviewinfo_get.php',
+		dataType: 'json',
+	})
+	.done(function(data, status, jqXHR){
+		// $("#work_read").html(data);
+		console.log(data);
+		
+		var rl_name = data['name'];
+		var rl_comment = data['comment'];
+		review_list(rl_name, rl_comment);
+
+	})
+	.fail(function(jqXHR, status, error){
+		 $("#ajax_result").html("エラーです");
+		 console.log(status);
+	})
+	.always(function(jqXHR, status){
+		console.log(status);
+	});
+}
+
+
+
 //関数_レビュー表示
 var i = 1;
 function review_list(name, review){
@@ -302,7 +399,7 @@ function review_list(name, review){
 	var p1 = document.createElement("p");
 	var hr = document.createElement("hr");
 
-	span1.innerHTML = "Contributor";
+	span1.innerHTML = "reviewer";
 	a1.setAttribute("href", "url");
 	a1.innerHTML = x;
 	span2.innerHTML = "Posted_date" + "&nbsp;" + now.getFullYear() + "/" + now.getMonth() + "/" + now.getDate();
@@ -321,7 +418,5 @@ function review_list(name, review){
         $("#rateit"+i).rateit();
     });
 }
-
-
 
 

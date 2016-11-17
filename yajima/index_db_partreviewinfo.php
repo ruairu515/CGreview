@@ -12,7 +12,6 @@ try{
     //ここに処理を記載
         print('paデータベースに接続しました');
 
-
     //SELECT文でデータ取得実装
         // // SELECT文を変数に格納
         // $sql = "SELECT * FROM posttest01";
@@ -34,11 +33,11 @@ try{
 
     //INSERT文でテーブルにデータ格納
         // INSERT文を変数に格納
-        $sql = "INSERT INTO partreviewinfo(reviewernum, comment, camera) VALUES (:reviewernum, :comment, :camera)";
+        $sql = "INSERT INTO partreviewinfo(name, comment, camera) VALUES (:name, :comment, :camera)";
         // 挿入する値は空のまま、SQL実行の準備をする
         $stmt = $pdo->prepare($sql);
         // 挿入する値を配列に格納する
-        $params = array(':reviewernum' => $myInput1, ':comment' => $myInput2, ':camera' => $myInput3);
+        $params = array(':name' => $myInput1, ':comment' => $myInput2, ':camera' => $myInput3);
         // 挿入する値が入った変数をexecuteにセットしてSQLを実行
         $stmt->execute($params);
         // 登録完了のメッセージ
