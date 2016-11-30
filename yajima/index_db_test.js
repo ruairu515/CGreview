@@ -300,6 +300,14 @@ function Domdata(data2, whith2, height2,mate_switch){
 
 
 
+
+
+
+
+
+
+
+
 //関数＿form_ajax送信
 $(document).ready(function(){
 	$("#submit_bt").click(function(event){

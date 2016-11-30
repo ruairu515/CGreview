@@ -15,20 +15,31 @@ try{
 
 
 
+    // // // prepareメソッドでSQLをセット
+    // $stmt = $pdo->prepare("select title from workinfo where workid  = ? ");
+    // // and studentid = ?
+    // //bindValueメソッドでパラメータをセット
+    // $stmt->bindValue(1,1);
+    // // $stmt->bindValue(2,3);
+    // //executeでクエリを実行
+    // $stmt->execute();
+    // //結果を表示
+    // $result = $stmt->fetch();
+    // echo $result[0];
+
+
     // // prepareメソッドでSQLをセット
-    $stmt = $pdo->prepare("select title from workinfo where workid  = ? ");
+    $stmt = $pdo->prepare("select title from test01_outside where workid  = ? ");
     // and studentid = ?
     //bindValueメソッドでパラメータをセット
-    $stmt->bindValue(1,3);
+    $stmt->bindValue(1,1);
     // $stmt->bindValue(2,3);
     //executeでクエリを実行
     $stmt->execute();
     //結果を表示
     $result = $stmt->fetch();
     echo $result[0];
-
-
-
+    
 
 
 
