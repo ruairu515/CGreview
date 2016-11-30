@@ -29,7 +29,7 @@ try{
 
 
     // // prepareメソッドでSQLをセット
-    $stmt = $pdo->prepare("select title from test01_outside where workid  = ? ");
+    $stmt = $pdo->prepare("select title from workinfo where workid  = ? ");
     // and studentid = ?
     //bindValueメソッドでパラメータをセット
     $stmt->bindValue(1,1);

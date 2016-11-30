@@ -1,13 +1,21 @@
-   
-
-
-
 ////////////////////////////////////////////////////////////////////
 // windowイベントの定義
 ////////////////////////////////////////////////////////////////////
 window.addEventListener("load", function () {
     threeStart(); //Three.jsのスタート関数の実行
+    dbStart(); //データベース処理のスタート関数の実行
 });
+
+
+
+
+
+
+
+
+
+
+
 ////////////////////////////////////////////////////////////////////
 // Three.jsスタート関数の定義
 ////////////////////////////////////////////////////////////////////
@@ -19,9 +27,9 @@ function threeStart() {
     initCamera(); //カメラ初期化関数の実行
     initEvent();  //イベント準備関数の実行
     loop();       //無限ループ関数の実行
-    
     addButton();//wireFrameボタンDOM実装
 }
+
 
 ////////////////////////////////////////////////////////////////////
 // Three.js初期化関数の定義
@@ -35,8 +43,6 @@ function initThree(){
     canvasFrame = document.getElementById('canvas_frame');
     //レンダラーオブジェクトの生成
     renderer = new THREE.WebGLRenderer({ antialias: true ,preserveDrawingBuffer: true});
-    //renderer = new THREE.CanvasRenderer();//<------------------------------------------------------------------------------------------------------------（canvasレンダラー）
-
     if (!renderer) alert('Three.js の初期化に失敗しました');
     //レンダラーのサイズの設定
     renderer.setSize(canvasFrame.clientWidth, canvasFrame.clientHeight);
@@ -50,6 +56,8 @@ function initThree(){
     //シーンオブジェクトの生成
     scene = new THREE.Scene();
 }
+
+
 ////////////////////////////////////////////////////////////////////
 // カメラ初期化関数の定義
 ////////////////////////////////////////////////////////////////////
@@ -72,6 +80,7 @@ function initCamera() {
     orbit.maxDistance = 8000;   //遠ざかれる距離の最大値
 
 }
+
 
 ////////////////////////////////////////////////////////////////////
 // cube初期化関数の定義
@@ -98,8 +107,6 @@ function initCube(){
 }
 
 
-
-
 ////////////////////////////////////////////////////////////////////
 // オブジェクト初期化関数の定義
 ////////////////////////////////////////////////////////////////////
@@ -117,55 +124,11 @@ function initObject(){
     jsonObj.position.set( 50, -25, 0);
     jsonObj.scale.set( 15, 15, 15 );
     scene.add( jsonObj );
+
+    // jsonObj.name = "tes1";
     rayReceiveObjects.push( jsonObj );
     });
-
-
-
-
-
-    /////////////直方体の形状と材質の定義//////////////////
-    // 形状オブジェクトの宣言と生成
-    // var geometry = new THREE.CubeGeometry(100, 25, 200);
-    // // 材質オブジェクトの宣言と生成
-    // var material = new THREE.MeshNormalMaterial();
-    // var material = new THREE.MeshLambertMaterial({color : 'blue'});
-
-
-    ///////////直方体オブジェクトの準備//////////////////
-    // 直方体オブジェクトの生成
-    // cubes[0] = new THREE.Mesh(geometry, material);
-    // // 直方体オブジェクトのシーンへの追加
-    // scene.add(cubes[0]);
-    // // 直方体オブジェクトの位置座標を設定
-    // cubes[0].position.set(0, 0, 0);
-
-    // // 直方体オブジェクトの生成
-    // cubes[1] = new THREE.Mesh(geometry, material);
-    // // 直方体オブジェクトのシーンへの追加
-    // scene.add(cubes[1]);
-    // // 直方体オブジェクトの位置座標を設定
-    // cubes[1].position.set(0, 0, 0);
-
-    // // 直方体オブジェクトの生成
-    // cubes[2] = new THREE.Mesh(geometry, material);
-    // // 直方体オブジェクトのシーンへの追加
-    // scene.add(cubes[2]);
-    // // 直方体オブジェクトの位置座標を設定
-    // cubes[2].position.set(0, 50, 0);
-
-    // 光線受信判定用
-    // cubes[0].name = "cube";
-    // cubes[1].name = "箱２";
-    // cubes[2].name = "箱３";
-
-    // 光線受信オブジェクト配列へ追加
-    // rayReceiveObjects.push( cubes[0] );
-    // rayReceiveObjects.push( cubes[1] );
-    // rayReceiveObjects.push( cubes[2] );
 }
-
-
 
 
 ////////////////////////////////////////////////////////////////////
@@ -189,6 +152,8 @@ function initWire() {
     rayReceiveObjects.push( jsonObj );
     });
 }
+
+
 ////////////////////////////////////////////////////////////////////
 // ライト初期化関数の定義
 ////////////////////////////////////////////////////////////////////
@@ -239,31 +204,105 @@ function initEvent() {
 
         //交わるオブジェクトが１個以上の場合
         if ( intersects.length > 0 ) {
-
+            // console.log( intersects[0].object.name );
             console.log( intersects[0].point);
             posi_x = intersects[0].point.x;
             posi_y = intersects[0].point.y;
             posi_z = intersects[0].point.z;
 
-
-            var geometry1 = new THREE.CubeGeometry(50,50,50);
-            // var material1 = new THREE.MeshLambertMaterial({color : 'silver'});
-            var material1 = new THREE.MeshNormalMaterial();
-            var cube1 = new THREE.Mesh(geometry1,material1);
-            cube1.position.set(posi_x, posi_y, posi_z);
-            cube1.rotation.x = 45;
-            cube1.rotation.y = 45;
-            scene.add(cube1);
-            rayReceiveObjects.push( cube1 );
+            if($('#partReview').length > 0){
+                //タグ削除
+                tag_remove();
+            }
+            //タグ作成
+            tag_create();
 
         //最も近いオブジェクトの名前をアラート表示する
         //     alert( intersects[0].object.name + "がクリックされました！");
         //     console.log("カメラ位置座標からの距離：" + intersects[0].distance);
         //     console.log("光線との交差座標(" + intersects[0].point.x + ", " + intersects[0].point.y + ", " + intersects[0].point.z + ")" );
+        
         }
     }
 }
 
+function tag_remove(){
+    scene.remove(tags);
+    $('#partReview').remove();
+}
+//グローバル変数
+var tags = 0; //直方体オブジェクト
+function tag_create(){
+    // 直方体の形状と材質の定義
+    var geometry1 = new THREE.CubeGeometry(50,50,50);
+    var material1 = new THREE.MeshNormalMaterial();
+    // tagオブジェクトの準備
+    tags = new THREE.Mesh(geometry1,material1);
+    
+    tags.name = "tag1";
+    tags.position.set(posi_x, posi_y, posi_z);
+    tags.rotation.x = 45;
+    tags.rotation.y = 45;
+    
+    scene.add(tags);
+    rayReceiveObjects.push( tags );
+    console.log(tags.name);
+
+    formDom_create();
+}
+
+function formDom_create(){
+    //partreviewform_DOM実装
+    var id = document.getElementById("partReview_form");
+    var form1 = document.createElement("form");
+    form1.id = "partReview";
+    form1.method = "material";
+    form1.name = "partReview_form";
+    form1.action = "index_db_partreviewinfo.php";
+    id.appendChild(form1); 
+
+    var table1 = document.createElement("table");
+    table1.border = 2;
+    form1.appendChild(table1); 
+
+    var tr1 = document.createElement("tr");
+    table1.appendChild(tr1);
+    var th1 = document.createElement("th");
+    th1.innerHTML = "Contributor : ";
+    tr1.appendChild(th1);
+    var td1 = document.createElement("td");
+    tr1.appendChild(td1);
+    var textarea1 = document.createElement("textarea");
+    textarea1.name = "Contributor";
+    textarea1.id = "word_id1";
+    textarea1.rows = "1";
+    td1.appendChild(textarea1);
+
+    var tr2 = document.createElement("tr");
+    table1.appendChild(tr2);
+    var th2 = document.createElement("th");
+    th2.innerHTML = "partReview : "; 
+    tr2.appendChild(th2);
+    var td2 = document.createElement("td");
+    tr2.appendChild(td2);
+    var textarea2 = document.createElement("textarea");
+    textarea2.name = "partreview";
+    textarea2.id = "word_id2";
+    textarea2.rows = "4";
+    textarea2.cols = "40";
+    td2.appendChild(textarea2);
+
+    var input1 = document.createElement("input");
+    input1.type = "reset";
+    input1.value = "Clear";
+    form1.appendChild(input1);
+
+    var input2 = document.createElement("input");
+    input2.type = "submit";
+    input2.value = "Submit";
+    form1.appendChild(input2); 
+
+}
 
 
 ////////////////////////////////////////////////////////////////////
@@ -274,20 +313,14 @@ var step = 0; //ステップ数
 var request_stop;
 function loop() {
     orbit.update();
-
     //ステップ数のインクリメント
     step++;
-    //各直方体の角度の変更
-    // cubes[0].rotation.set(step / 100, 0, 0);
-    // cubes[1].rotation.set(0, step / 100, 0);
-    // cubes[2].rotation.set(0, 0, step / 100);
-
     //レンダリング
     renderer.render(scene, camera);
-
     //「loop()」関数の呼び出し
     request_stop = requestAnimationFrame(loop);
 }
+
 
 //////////////////////////////////////////////
 // addButtonDom   
@@ -307,7 +340,7 @@ function addButton(){
     var input1 = document.createElement("input");
     input1.type = "button";
     input1.value = "wireFrame";
-    input1.id = "wireFrame"
+    input1.id = "wireFrame";
     input1.setAttribute("onclick","wireFrame_button()");
     id.appendChild(input1); 
 
@@ -316,7 +349,7 @@ function addButton(){
     var input1 = document.createElement("input");
     input1.type = "button";
     input1.value = "screen_shoot";
-    input1.id = "download"
+    input1.id = "download";
     input1.setAttribute("onclick","download_button()");
     id.appendChild(input1); 
 }
@@ -337,7 +370,7 @@ function wireFrame_button(){
 }
 
 function download_button(){    
-    if($('#test').length){
+    if($('#img_download').length){
         $('a').remove();
     }
     var id = document.getElementById("add_button");
@@ -345,7 +378,7 @@ function download_button(){
     var canvas = document.getElementById('canvas');
     var canvas = renderer.domElement;
     var imgsrc = canvas.toDataURL('image/png');
-    a1.id = "test"
+    a1.id = "img_download"
     a1.href = imgsrc;
     a1.download = "picture";
     a1.innerHTML = "download";
@@ -354,5 +387,169 @@ function download_button(){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////
+//データベース処理のスタート関数の実行
+////////////////////////////////////////////////////////////////////
+function dbStart(){
+    work_title();//作品タイトル取得
+    form_Storage();//フォーム格納
+    review_get();//レビューデータ
+}
+
+
+//////////////////////////////////////////////
+// 作品タイトルの読み込み  
+//////////////////////////////////////////////
+function work_title(){
+    $.ajax({
+        type: 'POST',
+        url: 'index_db_workid.php',
+        dataType: 'html',
+    })
+    .done(function(data, status, jqXHR){
+        $("#work_read").html(data);
+        console.log(data);
+    })
+    .fail(function(jqXHR, status, error){
+         $("#ajax_result").html("エラーです");
+         console.log(status);
+    })
+    .always(function(jqXHR, status){
+        console.log(status);
+    });
+}
+
+
+//////////////////////////////////////////////
+// フォームデータ格納  
+//////////////////////////////////////////////
+function form_Storage(){
+    //関数＿form_ajax送信
+    $(document).ready(function(){
+        $("#submit_bt").click(function(event){
+            //フォームが通常の動きをしないように
+            event.preventDefault();
+            //post.php⬅︎testのurlに入れたい
+            // var  form = $(this).parents('form').attr('action');
+            // console.log(form);
+            //初期化
+            $("#ajax_result").empty();
+            $('<input>').attr({
+            type: 'hidden',
+            id: 'word_id3',
+            name: 'hoge',
+            value: camera_position
+      　　　}).appendTo('#target_id');
+            test();
+        });
+    });
+    function test(){
+        var word_val1=$("#word_id1").val(); 
+        var word_val2=$("#word_id2").val(); 
+        var word_val3=$("#word_id3").val(); 
+        $.ajax({
+            type: 'POST',
+            url: 'index_db_partreviewinfo.php',
+            data:{
+                word1:word_val1,
+                word2:word_val2,
+                word3:word_val3
+            },
+            dataType: 'html',
+        })
+        //$.post('./test.php', {word1:word_val1,word2:word_val2})
+        .done(function(data, status, jqXHR){
+            $("#ajax_result").html(data);
+            var phpdata = data;
+            console.log(phpdata);
+            console.log(status);
+            //$("#ajax_result").html(data.word1 +"と"+ data.word2);//PHPからJSON形式で返ってくる場合
+        })
+        .fail(function(jqXHR, status, error){
+             $("#ajax_result").html("エラーです");
+             console.log(status);
+        })
+        .always(function(jqXHR, status){
+            console.log(status);
+        });
+    }
+}
+
+
+//////////////////////////////////////////////
+// レビューデータ取得  
+//////////////////////////////////////////////
+//データベースから値取得
+function review_get(){
+    $.ajax({
+        type: 'POST',
+        url: 'index_db_partreviewinfo_get.php',
+        dataType: 'json',
+    })
+    .done(function(data, status, jqXHR){
+        // $("#work_read").html(data);
+        console.log(data);
+        var rl_name = data['name'];
+        var rl_comment = data['comment'];
+        review_list(rl_name, rl_comment);
+    })
+    .fail(function(jqXHR, status, error){
+         $("#ajax_result").html("エラーです");
+         console.log(status);
+    })
+    .always(function(jqXHR, status){
+        console.log(status);
+    });
+}
+
+var i = 1;
+function review_list(name, review){
+    i++;
+    var now = new Date();
+    var x = name;
+    var y = review;
+    var answer1 = document.getElementById('answer1');
+    
+    var span1 = document.createElement("span");
+    var a1 = document.createElement("a");
+    var span2 = document.createElement("span");
+    var div1 = document.createElement("div");
+    var p1 = document.createElement("p");
+    var hr = document.createElement("hr");
+
+    span1.innerHTML = "reviewer";
+    a1.setAttribute("href", "url");
+    a1.innerHTML = x;
+    span2.innerHTML = "Posted_date" + "&nbsp;" + now.getFullYear() + "/" + now.getMonth() + "/" + now.getDate();
+    // div1.setAttribute("id", "rateit"+i);
+    p1.innerHTML = y;
+
+    answer1.appendChild(span1);
+    answer1.appendChild(a1);
+    answer1.appendChild(span2);
+    answer1.appendChild(div1);
+    answer1.appendChild(p1);
+    answer1.appendChild(hr);
+    
+    // $(function() {
+    //     // RateItの設定（2）
+    //     $("#rateit"+i).rateit();
+    // });
+}
 
 
