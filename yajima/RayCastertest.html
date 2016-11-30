@@ -5,14 +5,17 @@
   <script src="three.min.js"></script>
   <script src="OrbitControls.js"></script>  
 <title>マウスクリックによるオブジェクトの判定</title>
-  <script src="./jquery.rateit.min.js"></script> 
+  <!-- <script src="./jquery.rateit.min.js"></script>  -->
+
+<!-- jQueryの読込 -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
 <script src = "RayCastertest.js"></script>
 <!-- <script src="TrackballControls.js"></script>  -->
 <style>
 *{padding:0px; margin:0px}
 
-div#canvas-frame{
+div#canvas_frame{
   width: 600px;  /* 横幅 */
   height: 400px; /* 縦幅 */
   overflow:hidden;
@@ -21,6 +24,8 @@ div#canvas-frame{
 
 </head>
 <body>
-  <div id="canvas-frame"></div><!-- canvas要素を配置するdiv要素 -->
+  <div id="canvas_frame"></div><!-- canvas要素を配置するdiv要素 -->
+  <div id="add_button"></div><!-- wirebotton要素を配置するdiv要素 -->
+
 </body>
 </html>
