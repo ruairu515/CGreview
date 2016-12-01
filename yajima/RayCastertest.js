@@ -226,6 +226,7 @@ function initEvent() {
     }
 }
 
+
 function tag_remove(){
     scene.remove(tags);
     $('#partReview').remove();
@@ -256,25 +257,30 @@ function formDom_create(){
     var id = document.getElementById("partReview_form");
     var form1 = document.createElement("form");
     form1.id = "partReview";
-    form1.method = "material";
-    form1.name = "partReview_form";
-    form1.action = "index_db_partreviewinfo.php";
+    form1.method = "post";
+    form1.name = "hoge2";
+    form1.action = "test1_part.php";
     id.appendChild(form1); 
 
     var table1 = document.createElement("table");
     table1.border = 2;
+    table1.id = "add_data";
     form1.appendChild(table1); 
+
+    // var input0 = document.createElement("input");
+    // input0.id = "add_data";
+    // table1.appendChild(input0);
 
     var tr1 = document.createElement("tr");
     table1.appendChild(tr1);
     var th1 = document.createElement("th");
-    th1.innerHTML = "Contributor : ";
+    th1.innerHTML = "contributor : ";
     tr1.appendChild(th1);
     var td1 = document.createElement("td");
     tr1.appendChild(td1);
     var textarea1 = document.createElement("textarea");
-    textarea1.name = "Contributor";
-    textarea1.id = "word_id1";
+    textarea1.id = "word_id3";
+    textarea1.name = "Contributor"; 
     textarea1.rows = "1";
     td1.appendChild(textarea1);
 
@@ -287,7 +293,7 @@ function formDom_create(){
     tr2.appendChild(td2);
     var textarea2 = document.createElement("textarea");
     textarea2.name = "partreview";
-    textarea2.id = "word_id2";
+    textarea2.id = "word_id4";
     textarea2.rows = "4";
     textarea2.cols = "40";
     td2.appendChild(textarea2);
@@ -299,6 +305,7 @@ function formDom_create(){
 
     var input2 = document.createElement("input");
     input2.type = "submit";
+    input2.id = "submit_part";
     input2.value = "Submit";
     form1.appendChild(input2); 
 
@@ -407,7 +414,7 @@ function download_button(){
 ////////////////////////////////////////////////////////////////////
 function dbStart(){
     work_title();//作品タイトル取得
-    form_Storage();//フォーム格納
+    // form_Storage();//フォーム格納
     review_get();//レビューデータ
 }
 
@@ -436,59 +443,152 @@ function work_title(){
 
 
 //////////////////////////////////////////////
-// フォームデータ格納  
+// allformデータ格納  
 //////////////////////////////////////////////
-function form_Storage(){
-    //関数＿form_ajax送信
-    $(document).ready(function(){
-        $("#submit_bt").click(function(event){
-            //フォームが通常の動きをしないように
-            event.preventDefault();
-            //post.php⬅︎testのurlに入れたい
-            // var  form = $(this).parents('form').attr('action');
-            // console.log(form);
-            //初期化
-            $("#ajax_result").empty();
-            $('<input>').attr({
-            type: 'hidden',
-            id: 'word_id3',
-            name: 'hoge',
-            value: camera_position
-      　　　}).appendTo('#target_id');
-            test();
-        });
+
+//関数＿form_ajax送信
+$(document).ready(function(){
+    $("#submit_all").click(function(event){
+        //フォームが通常の動きをしないように
+        event.preventDefault();
+        //post.php⬅︎testのurlに入れたい
+        // var  form = $(this).parents('form').attr('action');
+        // console.log(form);
+        //初期化
+//         $("#ajax_result").empty();
+//         $('<input>').attr({
+//         type: 'hidden',
+//         id: 'word_id3',
+//         name: 'hoge',
+//         value: camera_position
+//   　　　}).appendTo('#target_id');
+        ajax_all();
     });
-    function test(){
-        var word_val1=$("#word_id1").val(); 
-        var word_val2=$("#word_id2").val(); 
-        var word_val3=$("#word_id3").val(); 
-        $.ajax({
-            type: 'POST',
-            url: 'index_db_partreviewinfo.php',
-            data:{
-                word1:word_val1,
-                word2:word_val2,
-                word3:word_val3
-            },
-            dataType: 'html',
-        })
-        //$.post('./test.php', {word1:word_val1,word2:word_val2})
-        .done(function(data, status, jqXHR){
-            $("#ajax_result").html(data);
-            var phpdata = data;
-            console.log(phpdata);
-            console.log(status);
-            //$("#ajax_result").html(data.word1 +"と"+ data.word2);//PHPからJSON形式で返ってくる場合
-        })
-        .fail(function(jqXHR, status, error){
-             $("#ajax_result").html("エラーです");
-             console.log(status);
-        })
-        .always(function(jqXHR, status){
-            console.log(status);
-        });
-    }
+});
+function ajax_all(){
+    var word_val1=$("#word_id1").val(); 
+    var word_val2=$("#word_id2").val(); 
+    // var word_val3=$("#word_id3").val(); 
+    $.ajax({
+        type: 'GET',
+        url: 'test1_all.php',
+        data:{
+            word1:word_val1,
+            word2:word_val2
+        },
+        dataType: 'html',
+    })
+    //$.post('./test.php', {word1:word_val1,word2:word_val2})
+    .done(function(data, status, jqXHR){
+        $("#ajax_test").html(data);
+        var phpdata = data;
+        console.log(phpdata);
+        console.log(status);
+        //$("#ajax_result").html(data.word1 +"と"+ data.word2);//PHPからJSON形式で返ってくる場合
+    })
+    .fail(function(jqXHR, status, error){
+         $("#ajax_test").html("エラーです");
+         console.log(status);
+    })
+    .always(function(jqXHR, status){
+        console.log(status);
+    });
 }
+
+
+//////////////////////////////////////////////
+// partformデータ格納  
+//////////////////////////////////////////////
+
+課題：文字
+// var posix_int = remove_decimal(posi_x);
+// var posiy_int = remove_decimal(posi_y);
+// var posiz_int = remove_decimal(posi_z);
+
+// function remove_decimal(n){
+//     if (n > 0) return ans = Math.floor(n);  //← 正数の場合はMath.floor()を使用
+//     else return ans = Math.ceil(n);         //← 負数の場合はMath.ceil()を使用
+// }
+// console.log(posix_int);
+
+
+
+
+//関数＿form_ajax送信
+$(document).ready(function(){
+    $("#partReview_form").on('submit','form',function(event){
+        //フォームが通常の動きをしないように
+        event.preventDefault();
+        //post.php⬅︎testのurlに入れたい
+        // var  form = $(this).parents('form').attr('action');
+        // console.log(form);
+        //初期化
+        // $("#ajax_result").empty();
+
+        $('<input>').attr({
+        type: 'hidden',
+        id: 'word_id5',
+        name: 'hoge',
+        value: posix_int
+  　　　}).appendTo('#add_data');
+        
+        $('<input>').attr({
+        type: 'hidden',
+        id: 'word_id6',
+        name: 'hoge',
+        value: posiy_int
+  　　　}).appendTo('#add_data');
+
+        $('<input>').attr({
+        type: 'hidden',
+        id: 'word_id7',
+        name: 'hoge',
+        value: posiz_int
+  　　　}).appendTo('#add_data');
+
+
+        ajax_part();
+    });
+});
+function ajax_part(){
+    var word_val1=$("#word_id3").val(); 
+    var word_val2=$("#word_id4").val(); 
+    var word_val3=$("#word_id5").val();
+    var word_val4=$("#word_id6").val(); 
+    var word_val5=$("#word_id7").val(); 
+    $.ajax({
+        type: 'POST',
+        url: 'test1_part.php',
+        data:{
+            word1:word_val1,
+            word2:word_val2,
+            word3:word_val3,
+            word4:word_val4,
+            word5:word_val5
+        },
+        dataType: 'html',
+    })
+    //$.post('./test.php', {word1:word_val1,word2:word_val2})
+    .done(function(data, status, jqXHR){
+        $("#ajax_test").html(data);
+        var phpdata = data;
+        console.log(phpdata);
+        console.log(status);
+        //$("#ajax_result").html(data.word1 +"と"+ data.word2);//PHPからJSON形式で返ってくる場合
+    })
+    .fail(function(jqXHR, status, error){
+         $("#ajax_test").html("エラーです");
+         console.log(status);
+    })
+    .always(function(jqXHR, status){
+        console.log(status);
+    });
+}
+
+
+
+
+
 
 
 //////////////////////////////////////////////
