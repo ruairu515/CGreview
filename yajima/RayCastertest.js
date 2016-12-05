@@ -123,6 +123,7 @@ function initObject(){
     jsonObj = new THREE.Mesh( geometry, faceMaterial );
     jsonObj.position.set( 50, -25, 0);
     jsonObj.scale.set( 15, 15, 15 );
+    jsonObj.name = "workObj";
     scene.add( jsonObj );
 
     // jsonObj.name = "tes1";
@@ -174,6 +175,8 @@ function initLight(){
 var posi_x;
 var posi_y;
 var posi_z;
+var INTERSECTED; //マウスポインタが指しているオブジェクト 
+
 function initEvent() {
 
     //HTML要素の位置による補正量の取得
@@ -204,21 +207,33 @@ function initEvent() {
 
         //交わるオブジェクトが１個以上の場合
         if ( intersects.length > 0 ) {
-            // console.log( intersects[0].object.name );
-            console.log( intersects[0].point);
-            posi_x = intersects[0].point.x;
-            posi_y = intersects[0].point.y;
-            posi_z = intersects[0].point.z;
+            //オブジェクトがクリックされた時
+           
 
-            if($('#partReview').length > 0){
-                //タグ削除
-                tag_remove();
+            if(intersects[0].object.name == "workObj"){
+               
+                // console.log( intersects[0].point);
+                posi_x = intersects[0].point.x;
+                posi_y = intersects[0].point.y;
+                posi_z = intersects[0].point.z;
+
+                if($('#partReview').length > 0){
+                    //タグ削除
+                    tag_remove();
+                }
+                //タグ作成
+                tag_create();
             }
-            //タグ作成
-            tag_create();
+            //tagがクリックされた時
+            else if(intersects[0].object.name == "tag1"){
+                 INTERSECTED = intersects[0].object;
+                 console.log(INTERSECTED.position);
+                 tag_review();
+                // console.log( intersects[0].point);
+            }
 
         //最も近いオブジェクトの名前をアラート表示する
-        //     alert( intersects[0].object.name + "がクリックされました！");
+            // alert( intersects[0].object.name + "がクリックされました！");
         //     console.log("カメラ位置座標からの距離：" + intersects[0].distance);
         //     console.log("光線との交差座標(" + intersects[0].point.x + ", " + intersects[0].point.y + ", " + intersects[0].point.z + ")" );
         
@@ -226,17 +241,21 @@ function initEvent() {
     }
 }
 
-
+var geometry1;
+var material1;
 function tag_remove(){
     scene.remove(tags);
+    geometry1.dispose();
+    material1.dispose();
+    rayReceiveObjects.pop();
     $('#partReview').remove();
 }
 //グローバル変数
 var tags = 0; //直方体オブジェクト
 function tag_create(){
     // 直方体の形状と材質の定義
-    var geometry1 = new THREE.CubeGeometry(50,50,50);
-    var material1 = new THREE.MeshNormalMaterial();
+    geometry1 = new THREE.CubeGeometry(50,50,50);
+    material1 = new THREE.MeshNormalMaterial();
     // tagオブジェクトの準備
     tags = new THREE.Mesh(geometry1,material1);
     
@@ -247,7 +266,8 @@ function tag_create(){
     
     scene.add(tags);
     rayReceiveObjects.push( tags );
-    console.log(tags.name);
+
+    console.log(rayReceiveObjects);
 
     formDom_create();
 }
@@ -500,7 +520,7 @@ function ajax_all(){
 // partformデータ格納  
 //////////////////////////////////////////////
 
-課題：文字
+// 課題：文字
 // var posix_int = remove_decimal(posi_x);
 // var posiy_int = remove_decimal(posi_y);
 // var posiz_int = remove_decimal(posi_z);
@@ -529,21 +549,24 @@ $(document).ready(function(){
         type: 'hidden',
         id: 'word_id5',
         name: 'hoge',
-        value: posix_int
+//         value: posix_int
+        value: posi_x
   　　　}).appendTo('#add_data');
         
         $('<input>').attr({
         type: 'hidden',
         id: 'word_id6',
         name: 'hoge',
-        value: posiy_int
+//         value: posiy_int
+        value: posi_y
   　　　}).appendTo('#add_data');
 
         $('<input>').attr({
         type: 'hidden',
         id: 'word_id7',
         name: 'hoge',
-        value: posiz_int
+//         value: posiz_int
+        value: posi_z
   　　　}).appendTo('#add_data');
 
 
@@ -592,7 +615,7 @@ function ajax_part(){
 
 
 //////////////////////////////////////////////
-// レビューデータ取得  
+// レビューデータ取得(チェックボックスクリック)  
 //////////////////////////////////////////////
 //データベースから値取得
 function review_get(){
@@ -651,5 +674,94 @@ function review_list(name, review){
     //     $("#rateit"+i).rateit();
     // });
 }
+
+
+
+
+
+// selectでpositionに対するレビュー表示
+//////////////////////////////////////////////
+// レビューデータ取得(タグクリック)  
+//////////////////////////////////////////////
+//データベースから値取得
+function tag_review(){
+    var positionX =INTERSECTED.position.x;
+    var positionY =INTERSECTED.position.y;
+    var positionZ =INTERSECTED.position.z;
+    console.log(positionX);
+    // $.ajax({
+    //     type: 'POST',
+    //     url: 'test1_part_get.php',
+    //     dataType: 'json',
+    // })
+    $.ajax({
+        type: 'POST',
+        url: 'test1_part_get.php',
+        data:{
+            word1:positionX,
+            word2:positionY,
+            word3:positionZ
+        },
+        dataType: 'html',
+    })
+    //$.post('./test.php', {word1:word_val1,word2:word_val2})
+    .done(function(data, status, jqXHR){
+        $("#ajax_test").html(data);
+        var phpdata = data;
+        console.log(phpdata);
+        console.log(status);
+        //$("#ajax_result").html(data.word1 +"と"+ data.word2);//PHPからJSON形式で返ってくる場合
+    })
+    .fail(function(jqXHR, status, error){
+         $("#ajax_test").html("エラーです");
+         console.log(status);
+    })
+    .always(function(jqXHR, status){
+        console.log(status);
+    });
+}
+
+
+
+
+
+
+var i = 1;
+function review_list(name, review){
+    i++;
+    var now = new Date();
+    var x = name;
+    var y = review;
+    var answer1 = document.getElementById('answer1');
+    
+    var span1 = document.createElement("span");
+    var a1 = document.createElement("a");
+    var span2 = document.createElement("span");
+    var div1 = document.createElement("div");
+    var p1 = document.createElement("p");
+    var hr = document.createElement("hr");
+
+    span1.innerHTML = "reviewer";
+    a1.setAttribute("href", "url");
+    a1.innerHTML = x;
+    span2.innerHTML = "Posted_date" + "&nbsp;" + now.getFullYear() + "/" + now.getMonth() + "/" + now.getDate();
+    // div1.setAttribute("id", "rateit"+i);
+    p1.innerHTML = y;
+
+    answer1.appendChild(span1);
+    answer1.appendChild(a1);
+    answer1.appendChild(span2);
+    answer1.appendChild(div1);
+    answer1.appendChild(p1);
+    answer1.appendChild(hr);
+    
+    // $(function() {
+    //     // RateItの設定（2）
+    //     $("#rateit"+i).rateit();
+    // });
+}
+
+
+
 
 

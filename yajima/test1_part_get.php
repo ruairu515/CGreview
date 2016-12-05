@@ -30,22 +30,22 @@ try{
         $myInput1 = $_POST['word1'];//contributor
         $myInput2 = $_POST['word2'];//partreview
         $myInput3 = $_POST["word3"];//posix
-        $myInput4 = $_POST['word4'];//posiy
-        $myInput5 = $_POST["word5"];//posiz
+        // $myInput4 = $_POST['word4'];//posiy
+        // $myInput5 = $_POST["word5"];//posiz
 
 
     //INSERT文でテーブルにデータ格納
         // INSERT文を変数に格納
-        $sql = "INSERT INTO test1_part(part_date,contributor,partreview,posix,posiy,posiz) VALUES (:part_date,:contributor,:partreview,:posix,:posiy,:posiz)";
+        $sql = "INSERT INTO test1_part(posix,posiy,posiz) VALUES (:posix,:posiy,:posiz)";
 
         // 挿入する値は空のまま、SQL実行の準備をする
         $stmt = $pdo->prepare($sql);
         // 挿入する値を配列に格納する
-        $params = array(':part_date' => $myInput0,':contributor' => $myInput1, ':partreview' => $myInput2, ':posix' => $myInput3, ':posiy' => $myInput4, ':posiz' => $myInput5);
+        $params = array(':posix' => $myInput1, ':posiy' => $myInput2, ':posiz' => $myInput3);
         // 挿入する値が入った変数をexecuteにセットしてSQLを実行
         $stmt->execute($params);
         // 登録完了のメッセージ
-        echo "<p>contributor={$myInput1}<br/>partreview={$myInput2}<br/>posix={$myInput3}<br/>posiy={$myInput4}<br/>posiz={$myInput5}<br/>格納しました。</p>";
+        echo "<p>contributor={$myInput1}<br/>partreview={$myInput2}<br/>posix={$myInput3}<br/>格納しました。</p>";
         // echo json_encode($params);;
         echo $myInput5;
     //接続終了
