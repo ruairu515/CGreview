@@ -33,7 +33,6 @@ try{
         $myInput4 = $_POST['word4'];//posiy
         $myInput5 = $_POST["word5"];//posiz
 
-
     //INSERT文でテーブルにデータ格納
         // INSERT文を変数に格納
         $sql = "INSERT INTO test1_part(part_date,contributor,partreview,posix,posiy,posiz) VALUES (:part_date,:contributor,:partreview,:posix,:posiy,:posiz)";
@@ -45,9 +44,9 @@ try{
         // 挿入する値が入った変数をexecuteにセットしてSQLを実行
         $stmt->execute($params);
         // 登録完了のメッセージ
-        echo "<p>contributor={$myInput1}<br/>partreview={$myInput2}<br/>posix={$myInput3}<br/>posiy={$myInput4}<br/>posiz={$myInput5}<br/>格納しました。</p>";
-        // echo json_encode($params);;
-        echo $myInput5;
+        // echo "<p>contributor={$myInput1}<br/>partreview={$myInput2}<br/>posix={$myInput3}<br/>posiy={$myInput4}<br/>posiz={$myInput5}<br/>格納しました。</p>";
+        // // echo json_encode($params);;
+        // echo $myInput5;
     //接続終了
     $pdo = null;
 }
@@ -57,4 +56,4 @@ catch (PDOException $e){
     die();
 }
 
- ?>
+?>

@@ -175,7 +175,8 @@ function initLight(){
 var posi_x;
 var posi_y;
 var posi_z;
-var INTERSECTED; //マウスポインタが指しているオブジェクト 
+var INTERSECTED; //マウスポインタが指しているオブジェクト
+var post_already = 1;
 
 function initEvent() {
 
@@ -217,18 +218,30 @@ function initEvent() {
                 posi_y = intersects[0].point.y;
                 posi_z = intersects[0].point.z;
 
-                if($('#partReview').length > 0){
+                if(($('#partReview').length > 0) && (post_already == 1)){
                     //タグ削除
                     tag_remove();
+                    formDom_remove();
+                }
+                if(post_already == 0){
+                    formDom_remove();
                 }
                 //タグ作成
                 tag_create();
+                formDom_create();
             }
             //tagがクリックされた時
             else if(intersects[0].object.name == "tag1"){
+                if($('#part_review').length > 0){
+                        $('#part_review').remove();
+                }
+
+                 
+
                  INTERSECTED = intersects[0].object;
                  console.log(INTERSECTED.position);
                  tag_review();
+
                 // console.log( intersects[0].point);
             }
 
@@ -248,8 +261,14 @@ function tag_remove(){
     geometry1.dispose();
     material1.dispose();
     rayReceiveObjects.pop();
-    $('#partReview').remove();
 }
+
+function formDom_remove(){
+    $('#partReview').remove();
+                 post_already = 1;
+}
+
+
 //グローバル変数
 var tags = 0; //直方体オブジェクト
 function tag_create(){
@@ -268,8 +287,6 @@ function tag_create(){
     rayReceiveObjects.push( tags );
 
     console.log(rayReceiveObjects);
-
-    formDom_create();
 }
 
 function formDom_create(){
@@ -328,7 +345,6 @@ function formDom_create(){
     input2.id = "submit_part";
     input2.value = "Submit";
     form1.appendChild(input2); 
-
 }
 
 
@@ -435,7 +451,7 @@ function download_button(){
 function dbStart(){
     work_title();//作品タイトル取得
     // form_Storage();//フォーム格納
-    review_get();//レビューデータ
+    // review_get();//レビューデータ
 }
 
 
@@ -520,23 +536,12 @@ function ajax_all(){
 // partformデータ格納  
 //////////////////////////////////////////////
 
-// 課題：文字
-// var posix_int = remove_decimal(posi_x);
-// var posiy_int = remove_decimal(posi_y);
-// var posiz_int = remove_decimal(posi_z);
-
-// function remove_decimal(n){
-//     if (n > 0) return ans = Math.floor(n);  //← 正数の場合はMath.floor()を使用
-//     else return ans = Math.ceil(n);         //← 負数の場合はMath.ceil()を使用
-// }
-// console.log(posix_int);
-
-
-
-
 //関数＿form_ajax送信
 $(document).ready(function(){
     $("#partReview_form").on('submit','form',function(event){
+
+        post_already = 0;
+        console.log(post_already);
         //フォームが通常の動きをしないように
         event.preventDefault();
         //post.php⬅︎testのurlに入れたい
@@ -544,7 +549,6 @@ $(document).ready(function(){
         // console.log(form);
         //初期化
         // $("#ajax_result").empty();
-
         $('<input>').attr({
         type: 'hidden',
         id: 'word_id5',
@@ -568,7 +572,6 @@ $(document).ready(function(){
 //         value: posiz_int
         value: posi_z
   　　　}).appendTo('#add_data');
-
 
         ajax_part();
     });
@@ -609,71 +612,31 @@ function ajax_part(){
 }
 
 
-
-
-
-
-
-//////////////////////////////////////////////
-// レビューデータ取得(チェックボックスクリック)  
-//////////////////////////////////////////////
-//データベースから値取得
-function review_get(){
-    $.ajax({
-        type: 'POST',
-        url: 'index_db_partreviewinfo_get.php',
-        dataType: 'json',
-    })
-    .done(function(data, status, jqXHR){
-        // $("#work_read").html(data);
-        console.log(data);
-        var rl_name = data['name'];
-        var rl_comment = data['comment'];
-        review_list(rl_name, rl_comment);
-    })
-    .fail(function(jqXHR, status, error){
-         $("#ajax_result").html("エラーです");
-         console.log(status);
-    })
-    .always(function(jqXHR, status){
-        console.log(status);
-    });
-}
-
-var i = 1;
-function review_list(name, review){
-    i++;
-    var now = new Date();
-    var x = name;
-    var y = review;
-    var answer1 = document.getElementById('answer1');
-    
-    var span1 = document.createElement("span");
-    var a1 = document.createElement("a");
-    var span2 = document.createElement("span");
-    var div1 = document.createElement("div");
-    var p1 = document.createElement("p");
-    var hr = document.createElement("hr");
-
-    span1.innerHTML = "reviewer";
-    a1.setAttribute("href", "url");
-    a1.innerHTML = x;
-    span2.innerHTML = "Posted_date" + "&nbsp;" + now.getFullYear() + "/" + now.getMonth() + "/" + now.getDate();
-    // div1.setAttribute("id", "rateit"+i);
-    p1.innerHTML = y;
-
-    answer1.appendChild(span1);
-    answer1.appendChild(a1);
-    answer1.appendChild(span2);
-    answer1.appendChild(div1);
-    answer1.appendChild(p1);
-    answer1.appendChild(hr);
-    
-    // $(function() {
-    //     // RateItの設定（2）
-    //     $("#rateit"+i).rateit();
-    // });
-}
+// //////////////////////////////////////////////
+// // レビューデータ取得(チェックボックスクリック)  
+// //////////////////////////////////////////////
+// //データベースから値取得
+// function review_get(){
+//     $.ajax({
+//         type: 'POST',
+//         url: 'index_db_partreviewinfo_get.php',
+//         dataType: 'json',
+//     })
+//     .done(function(data, status, jqXHR){
+//         // $("#work_read").html(data);
+//         console.log(data);
+//         var rl_name = data['name'];
+//         var rl_comment = data['comment'];
+//         review_list(rl_name, rl_comment);
+//     })
+//     .fail(function(jqXHR, status, error){
+//          $("#ajax_result").html("エラーです");
+//          console.log(status);
+//     })
+//     .always(function(jqXHR, status){
+//         console.log(status);
+//     });
+// }
 
 
 
@@ -684,11 +647,13 @@ function review_list(name, review){
 // レビューデータ取得(タグクリック)  
 //////////////////////////////////////////////
 //データベースから値取得
+var tagData_get;
 function tag_review(){
     var positionX =INTERSECTED.position.x;
     var positionY =INTERSECTED.position.y;
     var positionZ =INTERSECTED.position.z;
     console.log(positionX);
+
     // $.ajax({
     //     type: 'POST',
     //     url: 'test1_part_get.php',
@@ -702,14 +667,16 @@ function tag_review(){
             word2:positionY,
             word3:positionZ
         },
-        dataType: 'html',
+        dataType: 'json',
     })
     //$.post('./test.php', {word1:word_val1,word2:word_val2})
     .done(function(data, status, jqXHR){
-        $("#ajax_test").html(data);
-        var phpdata = data;
-        console.log(phpdata);
-        console.log(status);
+        // $("#ajax_test").html(data);
+        var tagData_get = data;
+        // console.log(tagData_get[1]);
+        review_list(tagData_get[0],tagData_get[1],tagData_get[2]);
+        // console.log(status);
+        // post_already = 0;
         //$("#ajax_result").html(data.word1 +"と"+ data.word2);//PHPからJSON形式で返ってくる場合
     })
     .fail(function(jqXHR, status, error){
@@ -724,15 +691,17 @@ function tag_review(){
 
 
 
-
-
 var i = 1;
-function review_list(name, review){
+function review_list(date,name,review){
     i++;
     var now = new Date();
     var x = name;
     var y = review;
     var answer1 = document.getElementById('answer1');
+    
+    var div0 = document.createElement("div");
+    div0.id = "part_review";
+    answer1.appendChild(div0);
     
     var span1 = document.createElement("span");
     var a1 = document.createElement("a");
@@ -741,25 +710,95 @@ function review_list(name, review){
     var p1 = document.createElement("p");
     var hr = document.createElement("hr");
 
-    span1.innerHTML = "reviewer";
+    span1.innerHTML = "reviewer"+"&nbsp;";
     a1.setAttribute("href", "url");
     a1.innerHTML = x;
-    span2.innerHTML = "Posted_date" + "&nbsp;" + now.getFullYear() + "/" + now.getMonth() + "/" + now.getDate();
+    // span2.innerHTML = "Posted_date" + "&nbsp;" + now.getFullYear() + "/" + now.getMonth() + "/" + now.getDate();
+    span2.innerHTML = "&nbsp;"+"Posted_date" + "&nbsp;" + date;
+
     // div1.setAttribute("id", "rateit"+i);
     p1.innerHTML = y;
 
-    answer1.appendChild(span1);
-    answer1.appendChild(a1);
-    answer1.appendChild(span2);
-    answer1.appendChild(div1);
-    answer1.appendChild(p1);
-    answer1.appendChild(hr);
-    
+    div0.appendChild(span1);
+    div0.appendChild(a1);
+    div0.appendChild(span2);
+    div0.appendChild(div1);
+    div0.appendChild(p1);
+    div0.appendChild(hr);
     // $(function() {
     //     // RateItの設定（2）
     //     $("#rateit"+i).rateit();
     // });
 }
+
+
+
+// var i = 1;
+// function review_list(name, review){
+//     i++;
+//     var now = new Date();
+//     var x = name;
+//     var y = review;
+
+
+
+// // PDOの時の実装
+// $dsn = 'mysql:dbname=CGreview;host=localhost;charset=utf8';
+// $user = 'root';
+// $password = 'root';
+
+// try{
+// //データーベースに接続
+//     $pdo = new PDO($dsn, $user, $password);
+//     // // prepareメソッドでSQLをセット
+//     $stmt = $pdo->prepare("select title from workinfo where workid  = ? ");
+//     // and studentid = ?
+//     //bindValueメソッドでパラメータをセット
+//     $stmt->bindValue(1,1);
+//     // $stmt->bindValue(2,3);
+//     //executeでクエリを実行
+//     $stmt->execute();
+//     //結果を表示
+//     $result = $stmt->fetch();
+//     echo $result[0];
+    
+   
+//     //接続終了
+//     $pdo = null;
+// }
+// //接続に失敗した際のエラー処理
+// catch (PDOException $e){
+//     print('エラーが発生しました。:'.$e->getMessage());
+//     die();
+// }
+//     var answer1 = document.getElementById('answer1');
+    
+//     var span1 = document.createElement("span");
+//     var a1 = document.createElement("a");
+//     var span2 = document.createElement("span");
+//     var div1 = document.createElement("div");
+//     var p1 = document.createElement("p");
+//     var hr = document.createElement("hr");
+
+//     span1.innerHTML = "reviewer";
+//     a1.setAttribute("href", "url");
+//     a1.innerHTML = x;
+//     span2.innerHTML = "Posted_date" + "&nbsp;" + now.getFullYear() + "/" + now.getMonth() + "/" + now.getDate();
+//     // div1.setAttribute("id", "rateit"+i);
+//     p1.innerHTML = y;
+
+//     answer1.appendChild(span1);
+//     answer1.appendChild(a1);
+//     answer1.appendChild(span2);
+//     answer1.appendChild(div1);
+//     answer1.appendChild(p1);
+//     answer1.appendChild(hr);
+    
+//     // $(function() {
+//     //     // RateItの設定（2）
+//     //     $("#rateit"+i).rateit();
+//     // });
+// }
 
 
 
