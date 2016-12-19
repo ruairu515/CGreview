@@ -4,15 +4,17 @@ $dsn = 'mysql:dbname=CGreview;host=localhost;charset=utf8';
 $user = 'root';
 $password = 'root';
 try{
-    
-    //データーベースに接続
     $pdo = new PDO($dsn, $user, $password);
-    $sql = "SELECT posix, posiy, posiz FROM test1_part";
-    // SQLステートメントを実行し、結果を変数に格納
+
+    $sql = "SELECT file_name FROM test2_workinfo";
+
     $stmt = $pdo->query($sql);
-    // foreach文で配列の中身を一行ずつ出力
-    $result = $stmt->fetchALL(PDO::FETCH_NUM);
-    echo json_encode($result);
+
+    while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
+        $row[] = $result["file_name"];   
+    }
+    echo json_encode($row);
+    
     $pdo = null;
 }
 //接続に失敗した際のエラー処理

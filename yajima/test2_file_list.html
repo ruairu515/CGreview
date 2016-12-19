@@ -2,52 +2,71 @@
 <html>
 <head>
 <meta charset="UTF-8">
-  <script src="./assets/js/three.min.js"></script>
-  <script src="./assets/js/OrbitControls.js"></script>
-  <script src="./assets/js/MTLLoader.js"></script>
-  <script src="./assets/js/OBJLoader.js"></script>
   <title>マウスクリックによるオブジェクトの判定</title>
-  <!-- <script src="./jquery.rateit.min.js"></script>  -->
-
-<!-- jQueryの読込 -->
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-  <script src = "./assets/js/test2_index.js"></script>
+
 
 </head>
 <body>
+ <h1>work_list</h1>
+<a href="test2_index.html?sample1=cycle2color.js">リンクです</a>
+
+
+
+
+
+<div id="list_data"></div>
+
+
 
 <script type="text/javascript">
-	var tagData_get;
-function tag_review(){
-    var positionX =INTERSECTED.position.x;
-    var positionY =INTERSECTED.position.y;
-    var positionZ =INTERSECTED.position.z;
-
-    $.ajax({
+var data_get;
+window.addEventListener("load", function () {
+        $.ajax({
         type: 'POST',
-        url: './assets/php/test2_tag_click.php',
-        data:{
-            word1:positionX,
-            word2:positionY,
-            word3:positionZ
-        },
-        dataType: 'json',
+        url: './assets/php/test2_list_get.php',
+        dataType: "json",
     })
     .done(function(data, status, jqXHR){
-        var tagData_get = data;
-        review_list(tagData_get[0],tagData_get[1],tagData_get[2]);
+    	list_data = data;
+    	console.log(list_data.length);
+
+    	while(list_data.length > 0){
+    		console.log(list_data.length+"::::"+list_data[0]);
+
+    		list_data.shift();
+    	}
+
+
+
+
+
     })
     .fail(function(jqXHR, status, error){
-         $("#ajax_test").html("エラーです");
+         $("#list_data").html("エラーです");
          console.log(status);
     })
     .always(function(jqXHR, status){
-        // console.log(status);
+        console.log(status);
     });
-}
+});
+
+
+// function list_create(){
+// 	    var id = document.getElementById("add_button");
+//     var input1 = document.createElement("input");
+//     input1.type = "button";
+//     input1.value = "material";
+//     input1.id = "material";
+//     input1.setAttribute("onclick","material_button()");
+//     id.appendChild(input1); 
+
+// }
+
+
+
+
 
 </script>
-
-
 </body>
 </html>

@@ -11,7 +11,7 @@ try{
     $myInput1 = $_POST['word1'];//contributor
     $myInput2 = $_POST['word2'];//partreview
     $myInput3 = $_POST["word3"];//posix
-    $stmt = $pdo->query("SELECT * FROM workinfo");
+    // $stmt = $pdo->query("SELECT * FROM workinfo");
     $sql = "SELECT test1_part.part_date, test1_part.contributor, test1_part.partreview FROM test1_part WHERE (((test1_part.posix)=$myInput1) AND ((test1_part.posiy)=$myInput2));";
     // SQLステートメントを実行し、結果を変数に格納
     $stmt = $pdo->query($sql);

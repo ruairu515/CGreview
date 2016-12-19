@@ -24,30 +24,30 @@ if (is_uploaded_file($tmp_path)) {
 }
 
 echo $tmp_path;
-// try{
-//     //データーベースに接続
-//     $pdo = new PDO($dsn, $user, $password);
-//     // POSTされたパラメータを受け取る
-//     $myInput1 = $file_name;
-//     // $myInput2 = $_POST['word_id1'];
-//       // echo $myInput2;
+try{
+    //データーベースに接続
+    $pdo = new PDO($dsn, $user, $password);
+    // POSTされたパラメータを受け取る
+    $myInput1 = $file_name;
+    // $myInput2 = $_POST['word_id1'];
+      // echo $myInput2;
 
-//     //INSERT文でテーブルにデータ格納
-//     $sql = "INSERT INTO test2_workinfo(file_name) VALUES (:file_name)";
-//     // 挿入する値は空のまま、SQL実行の準備をする
-//     $stmt = $pdo->prepare($sql);
-//     // 挿入する値を配列に格納する
-//     $params = array(':file_name' => $myInput1);
-//     // 挿入する値が入った変数をexecuteにセットしてSQLを実行
-//     $stmt->execute($params);
-//     // 登録完了のメッセージ
-//     echo "file_name={$myInput1}を格納しました";
-//     //接続終了
-//     $pdo = null;
-// }
-// //接続に失敗した際のエラー処理
-// catch (PDOException $e){
-//     print('エラーが発生しました。:'.$e->getMessage());
-//     die();
-// }
+    //INSERT文でテーブルにデータ格納
+    $sql = "INSERT INTO test2_workinfo(file_name) VALUES (:file_name)";
+    // 挿入する値は空のまま、SQL実行の準備をする
+    $stmt = $pdo->prepare($sql);
+    // 挿入する値を配列に格納する
+    $params = array(':file_name' => $myInput1);
+    // 挿入する値が入った変数をexecuteにセットしてSQLを実行
+    $stmt->execute($params);
+    // 登録完了のメッセージ
+    echo "file_name={$myInput1}を格納しました";
+    //接続終了
+    $pdo = null;
+}
+//接続に失敗した際のエラー処理
+catch (PDOException $e){
+    print('エラーが発生しました。:'.$e->getMessage());
+    die();
+}
 ?>

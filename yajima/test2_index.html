@@ -22,6 +22,22 @@
 	}
 </style>
 
+
+
+<script type="text/javascript">
+var urlPrm = new Object;
+var urlSearch = location.search.substring(1).split('&');
+for(i=0;urlSearch[i];i++) {
+  var kv = urlSearch[i].split('=');
+  urlPrm[kv[0]]=kv[1];
+}
+var list = urlPrm.sample1;
+tes(list);
+</script>
+<script type="text/javascript" src="test2_index.js"></script>
+
+
+
 </head>
 <body>
 

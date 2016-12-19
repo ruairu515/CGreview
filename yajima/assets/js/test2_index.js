@@ -1,8 +1,13 @@
+function tes(list_data){
+    console.log(list_data);
+    file_data = list_data;
+}
+
 ////////////////////////////////////////////////////////////////////
 // windowイベントの定義
 ////////////////////////////////////////////////////////////////////
 window.addEventListener("load", function () {
-    file_get();//作品データ取得
+    // file_get();//作品データ取得
     work_title();//作品タイトル取得
     setTimeout("threeStart()",50);//Three.jsのスタート関数の実行
     setTimeout("dbStart()",50);//その他DB処理のスタート関数の実行
@@ -135,7 +140,6 @@ function initOBJ(){
         }, onProgress, onError );
     });
 }
-
 
 
 ////////////////////////////////////////////////////////////////////
