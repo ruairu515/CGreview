@@ -8,19 +8,13 @@
 
 </head>
 <body>
- <h1>work_list</h1>
-<a href="test2_index.html?sample1=cycle2color.js">リンクです</a>
-
-
-
-
-
-<div id="list_data"></div>
-
+ <h1>work_lists</h1>
+<!-- <a href="test2_index.html?sample1=cycle2color.js">リンクです</a>
+ -->
+<div id="list_target"></div>
 
 
 <script type="text/javascript">
-var data_get;
 window.addEventListener("load", function () {
         $.ajax({
         type: 'POST',
@@ -29,18 +23,17 @@ window.addEventListener("load", function () {
     })
     .done(function(data, status, jqXHR){
     	list_data = data;
-    	console.log(list_data.length);
-
+    	var name;
+    	// console.log(list_data.length);
     	while(list_data.length > 0){
-    		console.log(list_data.length+"::::"+list_data[0]);
-
+    		var i = 0;
+    		// console.log(list_data.length+"::::"+list_data[i]);
+    		name = list_data[i];
+    		// console.log(name);
+    		list_create(name);
     		list_data.shift();
+    		i = i+1;
     	}
-
-
-
-
-
     })
     .fail(function(jqXHR, status, error){
          $("#list_data").html("エラーです");
@@ -50,23 +43,17 @@ window.addEventListener("load", function () {
         console.log(status);
     });
 });
-
-
-// function list_create(){
-// 	    var id = document.getElementById("add_button");
-//     var input1 = document.createElement("input");
-//     input1.type = "button";
-//     input1.value = "material";
-//     input1.id = "material";
-//     input1.setAttribute("onclick","material_button()");
-//     id.appendChild(input1); 
-
-// }
-
-
-
-
-
+function list_create(name){
+	var id = document.getElementById("list_target");
+    var a1 = document.createElement("a");
+    var br1 = document.createElement("br");
+    var list_name = name;
+    a1.href = 'test2_index.html?sample1='+list_name;
+    a1.innerHTML = list_name;    
+    id.appendChild(a1); 
+    id.appendChild(br1);
+}
 </script>
+
 </body>
 </html>

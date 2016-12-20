@@ -18,7 +18,7 @@ window.addEventListener("load", function () {
 ////////////////////////////////////////////////////////////////////
 function threeStart() {
     initThree();  //Three.js初期化関数の実行
-    initCube();  //cube初期化関数の実行
+    // initCube();  //cube初期化関数の実行
     initObject(); //json初期化関数の実行
     // initOBJ();//obj,mtl初期化関数の実行
     initLight();//ライト初期化関数の実行
@@ -127,7 +127,7 @@ function initOBJ(){
     // };
     // var onError = function ( xhr ) { };
     // THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
-    var mtlLoader = new THREE.MTLLoader();
+    var mtlLoader = new THR9EE.MTLLoader();
     // mtlLoader.setPath( 'obj/male02/' );
     mtlLoader.load( 'cycle2color.mtl', function( materials ) {
         materials.preload();
@@ -147,7 +147,7 @@ function initOBJ(){
 ////////////////////////////////////////////////////////////////////
 function initWire() {
     loader = new THREE.JSONLoader();
-    loader.load("cycle2color.js", function( geometry, materials ) {
+    loader.load("./assets/work_files/"+file_data, function( geometry, materials ) {
     var faceMaterial = new THREE.MeshPhongMaterial({                              
         color: 0x990000, //球の色
         wireframe: true //ワイヤーフレーム有効
