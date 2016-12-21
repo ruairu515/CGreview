@@ -11,6 +11,8 @@
 
 <!-- jQueryの読込 -->
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="./assets/css/test2_index.css">
   <script src = "./assets/js/test2_index.js"></script>
 <style>
 	*{padding:0px; margin:0px}
@@ -21,9 +23,6 @@
 	overflow:hidden;
 	}
 </style>
-
-
-
 <script type="text/javascript">
 var urlPrm = new Object;
 var urlSearch = location.search.substring(1).split('&');
@@ -35,12 +34,10 @@ var list = urlPrm.sample1;
 tes(list);
 </script>
 <script type="text/javascript" src="test2_index.js"></script>
-
-
-
 </head>
-<body>
 
+
+<body>
 <!-- title -->
 <div id = "work_title">
 <h1 id="work_read">タイトル読込</h1>
@@ -50,25 +47,19 @@ tes(list);
 <div id="canvas_frame"></div><!-- canvas要素を配置するdiv要素 -->
 <div id="add_button"></div><!-- wirebotton要素を配置するdiv要素 -->
 
-
+<div id="all_criate_target"></div>
 <!--  form  課題：星ライブラリの送信、日付の情報送信 -->
 <div id = "allReview_fo">
 	<form id = "submitForm" method="post" name="hoge" action="test1_all.php">
 		<table border = 2>
 			<div id="target_id"></div>
-<!-- 			<tr>
-				<th>星五つのうち：</th>
-				<td><div class="rateit" id="hosi"></div></td>
-			</tr> -->
 			<tr>
 				<th>modeling : </th>
-				<!-- <td><textarea name="Contributor" id="word_id1" rows="1"></textarea></td> -->
-				<td><input id = "word_id1" type="number" name="example2" value="3" min="0" max="5"></td>
+				<td><input id = "word_id1" type="number" name="example2" value="3" min="1" max="5"></td>
 			</tr>
 			<tr>
 				<th>material : </th>
-			<!-- 	<td><textarea name="comment" id="word_id2" rows="4" cols="40"></textarea></td> -->
-				<td><input id = "word_id2" type="number" name="example2" value="3" min="0" max="5"></td>
+				<td><input id = "word_id2" type="number" name="example2" value="3" min="1" max="5"></td>
 			</tr>
 		</table>
 		<input type="reset" value="Clear" />

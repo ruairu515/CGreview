@@ -1,3 +1,7 @@
+////////////////////////////////////////////////////////////////////
+// 作品データ呼び出し
+////////////////////////////////////////////////////////////////////
+var file_data;
 function tes(list_data){
     console.log(list_data);
     file_data = list_data;
@@ -93,9 +97,7 @@ function initCube(){
 // jsonオブジェクト初期化関数の定義
 ////////////////////////////////////////////////////////////////////
 var jsonObj,faceMaterial;
-var file_data;
 function initObject(){
-    console.log("3番目");
 
     // JSONObj
     loader = new THREE.JSONLoader();
@@ -424,18 +426,12 @@ function tagRemove_button(){
     // }
 }
 
-
-
-
-
-
-
-
 ////////////////////////////////////////////////////////////////////
 //データベース処理のスタート関数の実行
 ////////////////////////////////////////////////////////////////////
 function dbStart(){
     dataGet();//jsonファイル読み込み
+    allreview();//全体評価の平均
 }
 
 //////////////////////////////////////////////
@@ -502,7 +498,7 @@ function dataGet(){
         arrayBefore = data;
         // console.log(data);
 
-        console.log(arrayBefore.length);
+        // console.log(arrayBefore.length);
         var arrayAfter = arrayBefore;
         while(arrayAfter.length > 0){
             var i=0;          
@@ -523,6 +519,97 @@ function dataGet(){
         // console.log(status);
     });
 }
+//////////////////////////////////////////////
+// 全体評価の平均  
+//////////////////////////////////////////////
+var alldata = [];
+function allreview(){
+    $.ajax({
+        type: 'POST',
+        url: './assets/php/test2_all_get.php',
+        dataType: 'json',
+    })
+    .done(function(data, status, jqXHR){
+        console.log(data);
+        all_criate("modeling",data[0],data[1],data[2],data[3],data[4],data[5]);
+        all_criate("material",data[6],data[7],data[8],data[9],data[10],data[11]);
+
+
+    })
+    .fail(function(jqXHR, status, error){
+         $("#ajax_test").html("エラーです");
+         console.log(status);
+    })
+    .always(function(jqXHR, status){
+        // console.log(status);
+    });
+}
+function all_criate(text,avg,evaluation5,evaluation4,evaluation3,evaluation2,evaluation1){
+    console.log(evaluation5);
+    console.log(evaluation4);
+    console.log(evaluation3);
+    console.log(evaluation2);
+    console.log(evaluation1);
+
+
+    var id1 = document.getElementById("all_criate_target");
+    var div1 = document.createElement("div");
+    var h21 = document.createElement("h2");
+    var div2 = document.createElement("div");
+    var div3 = document.createElement("div");
+    var div4 = document.createElement("div");
+
+    h21.setAttribute("class","avg_text");
+    h21.innerHTML=text+" :"+"&nbsp;";
+    div1.setAttribute("class","all_box");
+    div2.setAttribute("class","avg_box");
+    div3.setAttribute("class","avg_bar");
+    div4.setAttribute("class","avg_data");
+
+    div3.style="width:"+avg+"cm;";
+    div4.innerHTML=avg;
+    
+    id1.appendChild(div1);
+    div1.appendChild(h21);
+    div1.appendChild(div2);
+    div2.appendChild(div3);
+    div1.appendChild(div4);
+
+    var array=[evaluation5,evaluation4,evaluation3,evaluation2,evaluation1,evaluation1];
+
+    var i=0;
+    var m=0;
+    while(i < 5){
+        var table1 = document.createElement("table");    
+        var tr1 = document.createElement("tr");
+        var td1 = document.createElement("td");
+        var td2 = document.createElement("td");
+        var div5 = document.createElement("div");
+        var div6 = document.createElement("div");
+        var td3 = document.createElement("td");
+
+        var m=5-i;
+        td1.innerHTML="Evaluation"+m+" : ";
+
+        div5.setAttribute("class","one_box");
+        div6.setAttribute("class","one_bar");
+        
+        div6.style="width:"+array[i]+"cm;";
+        td3.innerHTML=array[i];
+
+        div1.appendChild(table1);
+        table1.appendChild(tr1);
+        tr1.appendChild(td1);
+        tr1.appendChild(td2);
+        td2.appendChild(div5);
+        div5.appendChild(div6);
+        tr1.appendChild(td3);
+        i= i+1;
+    }
+}
+
+
+
 
 //////////////////////////////////////////////
 // allformデータ格納  
