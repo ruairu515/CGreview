@@ -7,14 +7,52 @@
 </head>
 <body>
 
+<h1>work_post</h1>
 
-
-<form id="file_upload" action="./assets/php/test2_file_post.php" method="post" enctype="multipart/form-data">
-  ファイル：<br />
-  <input type="file" name="up_file" size="30000" /><br />
-  <br />
-  <input type="submit" value="アップロード" />
+<!-- ajax送信 -->
+<form id="my_form">
+	<table border = 2>
+		<tr>
+			<th>jsonfile : </th>
+			<td><input type="file" name="up_file[]"></td>
+		</tr>
+		<tr>
+			<th>thumbnail : </th>
+			<td><input type="file" name="up_file[]"></td>
+		</tr>
+	</table>
+    <button type="button" onclick="file_upload()">upload</button>
 </form>
+
+
+<script type="text/javascript">
+function file_upload()
+{
+    // フォームデータを取得
+    var formdata1 = new FormData($('#my_form').get(0));
+    // var formdata2 = new FormData($('#my_form').get(1));
+
+    // POSTでアップロード
+    $.ajax({
+        url  : "./assets/php/test2_file_post.php",
+        type : "POST",
+        data : formdata1,
+
+        cache       : false,
+        contentType : false,
+        processData : false,
+        dataType    : "html"
+    })
+    .done(function(data, textStatus, jqXHR){
+        alert(data);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown){
+        alert("fail");
+    });
+}
+</script>
+
+
 
 
 </body>

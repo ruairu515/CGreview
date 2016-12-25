@@ -9,30 +9,27 @@
 </head>
 <body>
  <h1>work_lists</h1>
-<!-- <a href="test2_index.html?sample1=cycle2color.js">リンクです</a>
- -->
 <div id="list_target"></div>
 
 
 <script type="text/javascript">
 window.addEventListener("load", function () {
-        $.ajax({
+    $.ajax({
         type: 'POST',
         url: './assets/php/test2_list_get.php',
         dataType: "json",
     })
     .done(function(data, status, jqXHR){
-    	list_data = data;
-    	var name;
-    	// console.log(list_data.length);
-    	while(list_data.length > 0){
-    		var i = 0;
-    		// console.log(list_data.length+"::::"+list_data[i]);
-    		name = list_data[i];
-    		// console.log(name);
-    		list_create(name);
-    		list_data.shift();
-    		i = i+1;
+    	data_length = data.length;
+    	data_half = data_length/2;
+    	var m = 0;
+    	var n = 1;
+    	console.log(data_half);
+    	while(data_half > 0){
+    		list_create(data[m],data[n]);
+    		data_half = data_half-1;
+    		m = m+2;
+    		n=n+2;
     	}
     })
     .fail(function(jqXHR, status, error){
@@ -43,16 +40,38 @@ window.addEventListener("load", function () {
         console.log(status);
     });
 });
-function list_create(name){
+function list_create(name,img){
 	var id = document.getElementById("list_target");
+    var div1 = document.createElement("div");
+    var img1 = document.createElement("img"); 
     var a1 = document.createElement("a");
-    var br1 = document.createElement("br");
+
     var list_name = name;
-    a1.href = 'test2_index.html?sample1='+list_name;
-    a1.innerHTML = list_name;    
-    id.appendChild(a1); 
-    id.appendChild(br1);
+    
+    img1.src='./assets/work_files/'+img;
+    img1.style.width="200px";
+    img1.style.height="200px";
+
+ 	a1.href = 'test2_index.html?sample1='+list_name;
+    a1.innerHTML = list_name;
+    
+
+    id.appendChild(div1); 
+    div1.appendChild(img1); 
+    div1.appendChild(a1); 
 }
+function thumbnail_create(thumbnail){
+	console.log(thumbnail);
+	// var id = document.getElementById("list_target");
+ //    var a1 = document.createElement("a");
+ //    var br1 = document.createElement("br");
+ //    var list_name = name;
+ //    a1.href = 'test2_index.html?sample1='+list_name;
+ //    a1.innerHTML = list_name;    
+ //    id.appendChild(a1); 
+ //    id.appendChild(br1);
+}
+
 </script>
 
 </body>

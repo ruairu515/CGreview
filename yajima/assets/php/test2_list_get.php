@@ -6,12 +6,14 @@ $password = 'root';
 try{
     $pdo = new PDO($dsn, $user, $password);
 
-    $sql = "SELECT file_name FROM test2_workinfo";
+    $sql = "SELECT file_name,thumbnail FROM test2_workinfo";
 
     $stmt = $pdo->query($sql);
 
     while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
-        $row[] = $result["file_name"];   
+        $row[] = $result["file_name"];
+        $row[] = $result["thumbnail"];
+        
     }
     echo json_encode($row);
     
