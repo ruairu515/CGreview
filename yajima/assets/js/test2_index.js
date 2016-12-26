@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////
 var file_data;
 function tes(list_data){
-    console.log(list_data);
+    // console.log(list_data);
     file_data = list_data;
 }
 
@@ -373,14 +373,14 @@ function addButton(){
     input1.setAttribute("onclick","download_button()");
     id.appendChild(input1);
 
-    //download_DOM実装
-    var id = document.getElementById("add_button");
-    var input1 = document.createElement("input");
-    input1.type = "button";
-    input1.value = "tagRemove";
-    input1.id = "download";
-    input1.setAttribute("onclick","tagRemove_button()");
-    id.appendChild(input1); 
+    //tagremove実装
+    // var id = document.getElementById("add_button");
+    // var input1 = document.createElement("input");
+    // input1.type = "button";
+    // input1.value = "tagRemove";
+    // input1.id = "download";
+    // input1.setAttribute("onclick","tagRemove_button()");
+    // id.appendChild(input1); 
 }
 
 function material_button(){
@@ -416,14 +416,6 @@ function download_button(){
 function tagRemove_button(){
     var len = arrayBefore.length;
     console.log(len);
-    // if ( len != 0 ) {
-    //     for( var i = 0; i < len; i++ ) {
-    //         scene.remove( cubes[i] );
-    //     }
-    //     for( var i = len - 1; i >= 0; i-- ) {
-    //         cubes.splice( i, 1 );
-    //     }
-    // }
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -438,50 +430,52 @@ function dbStart(){
 // 作品タイトルの読み込み  
 //////////////////////////////////////////////
 function work_title(){
-    $.ajax({
-        type: 'POST',
-        url: './assets/php/test2_workid_get.php',
-        dataType: 'html',
-    })
-    .done(function(data, status, jqXHR){
-        $("#work_read").html(data);
-        // console.log(data);
-    })
-    .fail(function(jqXHR, status, error){
-         $("#ajax_result").html("エラーです");
-         console.log(status);
-    })
-    .always(function(jqXHR, status){
-        // console.log(status);
-    });
+    // console.log("list_data");
+    $("#work_read").html(file_data);
+//     $.ajax({
+//         type: 'POST',
+//         url: './assets/php/test2_workid_get.php',
+//         dataType: 'html',
+//     })
+//     .done(function(data, status, jqXHR){
+//         $("#work_read").html(data);
+//         // console.log(data);
+//     })
+//     .fail(function(jqXHR, status, error){
+//          $("#ajax_result").html("エラーです");
+//          console.log(status);
+//     })
+//     .always(function(jqXHR, status){
+//         // console.log(status);
+//     });
 }
 
 ////////////////////////////////////////////////////////////////////
 //jsonデータ読み込み
 ////////////////////////////////////////////////////////////////////
-var file_data;
-function file_get(){
-    console.log("1番目");
-    $.ajax({
-        type: 'POST',
-        url: './assets/php/test2_file_get.php',
-        dataType: 'html',
-    })
-    .done(function(data, status, jqXHR){
-        // $("#work_read").html(data);
-        console.log("2番目");
-        file_data = data;
-        console.log(data);
+// var file_data;
+// function file_get(){
+//     console.log("1番目");
+//     $.ajax({
+//         type: 'POST',
+//         url: './assets/php/test2_file_get.php',
+//         dataType: 'html',
+//     })
+//     .done(function(data, status, jqXHR){
+//         // $("#work_read").html(data);
+//         console.log("2番目");
+//         file_data = data;
+//         console.log(data);
 
-    })
-    .fail(function(jqXHR, status, error){
-         $("#ajax_result").html("エラーです");
-         console.log(status);
-    })
-    .always(function(jqXHR, status){
-        // console.log(status);
-    });
-}
+//     })
+//     .fail(function(jqXHR, status, error){
+//          $("#ajax_result").html("エラーです");
+//          console.log(status);
+//     })
+//     .always(function(jqXHR, status){
+//         // console.log(status);
+//     });
+// }
 
 ////////////////////////////////////////////////////////////////////
 //ファイル毎のタグデータ読み込み(ファイル指定なし)
@@ -489,14 +483,18 @@ function file_get(){
 var jsonData = [];
 var arrayBefore;
 function dataGet(){
+    var word_val1=file_data; 
     $.ajax({
         type: 'POST',
         url: './assets/php/test2_tag_get.php',
+        data:{
+            word1:word_val1
+        },
         dataType: 'json',
     })
     .done(function(data, status, jqXHR){
         arrayBefore = data;
-        // console.log(data);
+        console.log(data);
 
         // console.log(arrayBefore.length);
         var arrayAfter = arrayBefore;
@@ -524,13 +522,17 @@ function dataGet(){
 //////////////////////////////////////////////
 var alldata = [];
 function allreview(){
+    var word_val1=file_data;
     $.ajax({
         type: 'POST',
         url: './assets/php/test2_all_get.php',
+        data:{
+            word1:word_val1
+        },
         dataType: 'json',
     })
     .done(function(data, status, jqXHR){
-        console.log(data);
+        // console.log(data);
         all_criate("modeling",data[0],data[1],data[2],data[3],data[4],data[5]);
         all_criate("material",data[6],data[7],data[8],data[9],data[10],data[11]);
 
@@ -545,11 +547,11 @@ function allreview(){
     });
 }
 function all_criate(text,avg,evaluation5,evaluation4,evaluation3,evaluation2,evaluation1){
-    console.log(evaluation5);
-    console.log(evaluation4);
-    console.log(evaluation3);
-    console.log(evaluation2);
-    console.log(evaluation1);
+    // console.log(evaluation5);
+    // console.log(evaluation4);
+    // console.log(evaluation3);
+    // console.log(evaluation2);
+    // console.log(evaluation1);
 
 
     var id1 = document.getElementById("all_criate_target");
@@ -623,12 +625,14 @@ $(document).ready(function(){
 function ajax_all(){
     var word_val1=$("#word_id1").val(); 
     var word_val2=$("#word_id2").val(); 
+    var word_val3=file_data;
     $.ajax({
         type: 'POST',
         url: './assets/php/test2_all_post.php',
         data:{
             word1:word_val1,
-            word2:word_val2
+            word2:word_val2,
+            word3:word_val3
         },
         dataType: 'html',
     })
@@ -684,7 +688,8 @@ function ajax_part(){
     var word_val2=$("#word_id4").val(); 
     var word_val3=$("#word_id5").val();
     var word_val4=$("#word_id6").val(); 
-    var word_val5=$("#word_id7").val(); 
+    var word_val5=$("#word_id7").val();
+    var word_val6=file_data;
     $.ajax({
         type: 'POST',
         url: './assets/php/test2_part_post.php',
@@ -693,7 +698,8 @@ function ajax_part(){
             word2:word_val2,
             word3:word_val3,
             word4:word_val4,
-            word5:word_val5
+            word5:word_val5,
+            word6:word_val6
         },
         dataType: 'html',
     })

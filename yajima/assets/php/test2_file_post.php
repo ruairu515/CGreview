@@ -42,33 +42,22 @@ if (is_uploaded_file($tmp_path)) {
 }
 
 
-
-
-
-
-
-
-
 try{
     //データーベースに接続
     $pdo = new PDO($dsn, $user, $password);
     // POSTされたパラメータを受け取る
     $myInput1 = $file_name1;
     $myInput2 = $file_name2;
-
-    // $myInput2 = $_POST['word_id1'];
-      // echo $myInput2;
-
     //INSERT文でテーブルにデータ格納
-    $sql = "INSERT INTO test2_workinfo(file_name,thumbnail) VALUES (:file_name,:thumbnail)";
+    $sql = "INSERT INTO work_info(work_name,thumbnail) VALUES (:work_name,:thumbnail)";
     // 挿入する値は空のまま、SQL実行の準備をする
     $stmt = $pdo->prepare($sql);
     // 挿入する値を配列に格納する
-    $params = array(':file_name' => $myInput1,':thumbnail' => $myInput2);
+    $params = array(':work_name' => $myInput1,':thumbnail' => $myInput2);
     // 挿入する値が入った変数をexecuteにセットしてSQLを実行
     $stmt->execute($params);
     // 登録完了のメッセージ
-    echo "file_name={$myInput1}を格納しました";
+    echo "work_name={$myInput1}を格納しました";
     //接続終了
     $pdo = null;
 }
@@ -77,9 +66,6 @@ catch (PDOException $e){
     print('エラーが発生しました。:'.$e->getMessage());
     die();
 }
-
-
-
 ?>
 
 
