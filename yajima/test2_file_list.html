@@ -49,7 +49,7 @@ function list_create(name,img){
     var list_name = name;
     
     img1.src='./assets/work_files/'+img;
-    img1.style.width="200px";
+    img1.style.width="300px";
     img1.style.height="200px";
 
  	a1.href = 'test2_index.html?sample1='+list_name;
@@ -71,10 +71,16 @@ function thumbnail_create(thumbnail){
  //    id.appendChild(a1); 
  //    id.appendChild(br1);
 }
-
 </script>
 
+<style type="text/css">
+    #list_target div{
+        display: inline-block;
+        width: 430px;
+    }
+</style>
+
 <a href="./test2_file_post.html">upload_page</a>
-<a href="./test2_file_list.html">list_page</a>
+<!-- <a href="./test2_file_list.html">list_page</a> -->
 </body>
 </html>

@@ -14,7 +14,7 @@ if (is_uploaded_file($tmp_path)) {
   if (move_uploaded_file($tmp_path, $upload_path.$file_name1)) {
     // ファイルが読出可能になるようにアクセス権限を変更
     chmod($upload_path.$file_name1, 0644);
-    echo $file_name1."をアップロードしました。";
+    // echo $file_name1."をアップロードしました。";
   } else {
     echo $file_name1."Error:アップロードに失敗しました。";
   }
@@ -33,7 +33,7 @@ if (is_uploaded_file($tmp_path)) {
   if (move_uploaded_file($tmp_path, $upload_path.$file_name2)) {
     // ファイルが読出可能になるようにアクセス権限を変更
     chmod($upload_path.$file_name2, 0644);
-    echo $file_name2."をアップロードしました。";
+    // echo $file_name2."をアップロードしました。";
   } else {
     echo $file_name2."Error:アップロードに失敗しました。";
   }
@@ -57,7 +57,7 @@ try{
     // 挿入する値が入った変数をexecuteにセットしてSQLを実行
     $stmt->execute($params);
     // 登録完了のメッセージ
-    echo "work_name={$myInput1}を格納しました";
+    echo "{$myInput1}と{$myInput2}を格納しました";
     //接続終了
     $pdo = null;
 }

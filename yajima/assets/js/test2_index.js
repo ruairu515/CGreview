@@ -17,7 +17,7 @@ window.addEventListener("load", function () {
     setTimeout("dbStart()",50);//その他DB処理のスタート関数の実行
 });
 
-////////////////////////////////////////////////////////////////////
+
 // Three.jsスタート関数の定義
 ////////////////////////////////////////////////////////////////////
 function threeStart() {
@@ -532,9 +532,9 @@ function allreview(){
         dataType: 'json',
     })
     .done(function(data, status, jqXHR){
-        // console.log(data);
-        all_criate("modeling",data[0],data[1],data[2],data[3],data[4],data[5]);
-        all_criate("material",data[6],data[7],data[8],data[9],data[10],data[11]);
+         console.log(data);
+        all_create("modeling",data[0],data[1],data[2],data[3],data[4],data[5]);
+        all_create("material",data[6],data[7],data[8],data[9],data[10],data[11]);
 
 
     })
@@ -546,7 +546,7 @@ function allreview(){
         // console.log(status);
     });
 }
-function all_criate(text,avg,evaluation5,evaluation4,evaluation3,evaluation2,evaluation1){
+function all_create(text,avg,evaluation5,evaluation4,evaluation3,evaluation2,evaluation1){
     // console.log(evaluation5);
     // console.log(evaluation4);
     // console.log(evaluation3);
@@ -554,7 +554,7 @@ function all_criate(text,avg,evaluation5,evaluation4,evaluation3,evaluation2,eva
     // console.log(evaluation1);
 
 
-    var id1 = document.getElementById("all_criate_target");
+    var id1 = document.getElementById("all_create_target");
     var div1 = document.createElement("div");
     var h21 = document.createElement("h2");
     var div2 = document.createElement("div");
@@ -576,11 +576,11 @@ function all_criate(text,avg,evaluation5,evaluation4,evaluation3,evaluation2,eva
     div1.appendChild(div2);
     div2.appendChild(div3);
     div1.appendChild(div4);
-
-    var array=[evaluation5,evaluation4,evaluation3,evaluation2,evaluation1,evaluation1];
-
+    
     var i=0;
     var m=0;
+    
+    var array=[evaluation5,evaluation4,evaluation3,evaluation2,evaluation1,evaluation1];
     while(i < 5){
         var table1 = document.createElement("table");    
         var tr1 = document.createElement("tr");
