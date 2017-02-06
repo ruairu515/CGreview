@@ -40,48 +40,59 @@ tes(list);
 
 <body>
 
-<div id = "work_title">
-	<h1 id="work_read">タイトル読込</h1>
+<header>
+		<ul class="gnav">
+		<li>
+      		<a class="hoverText" href="./test2_index.html"><p>Evaluation</p></a>
+    	</li>
+		<li>
+      		<a class="hoverText" href="./test2_file_list.html"><p>List</p></a>
+    	</li>
+		<li>
+      		<a class="hoverText" href="./test2_file_post.html"><p>Upload</p></a>
+    	</li>
+	</ul>
+</header>
+
+<div class="wrapper">
+	<div class="work_info">
+		<div id = "work_title"><h1 id="work_read">タイトル読込</h1></div>
+		<div id="canvas_frame"></div>
+		<div id="add_button"></div>
+	</div>
+
+	<hr/>
+
+	<div id = "allReview_fo">
+		<form id = "submitForm" method="post" name="hoge" action="test1_all.php">
+			<table border = 2>
+				<div id="target_id"></div>
+				<tr>
+					<th>modeling : </th>
+					<td><input id = "word_id1" type="number" name="example2" value="3" min="1" max="5"></td>
+				</tr>
+				<tr>
+					<th>material : </th>
+					<td><input id = "word_id2" type="number" name="example2" value="3" min="1" max="5"></td>
+				</tr>
+			</table>
+			<input type="reset" value="Clear" />
+			<input type="submit" id="submit_all" value="Submit" />
+		</form>
+	</div>
+
+	<div id="partReview_form"></div>
+
+
+	<hr/>
+	<h2>Overall Assessment</h2>
+	<div id="all_create_target"></div>
+	<h2>Partial Assessment</h2>
+	<div id = "ajax_test"></div>
+
+	<div id = "answer1"></div>
+
 </div>
-
-<div id="canvas_frame"></div>
-
-<div id="add_button"></div>
-<hr/>
-
-<div id = "allReview_fo">
-	<form id = "submitForm" method="post" name="hoge" action="test1_all.php">
-		<table border = 2>
-			<div id="target_id"></div>
-			<tr>
-				<th>modeling : </th>
-				<td><input id = "word_id1" type="number" name="example2" value="3" min="1" max="5"></td>
-			</tr>
-			<tr>
-				<th>material : </th>
-				<td><input id = "word_id2" type="number" name="example2" value="3" min="1" max="5"></td>
-			</tr>
-		</table>
-		<input type="reset" value="Clear" />
-		<input type="submit" id="submit_all" value="Submit" />
-	</form>
-</div>
-
-<div id="partReview_form"></div>
-
-
-<hr/>
-<h3>Overall Assessment</h3>
-<div id="all_create_target"></div>
-
-<h3>Partial Assessment</h3>
-<div id = "ajax_test"></div>
-
-<div id = "answer1"></div>
-
-
-<a href="./test2_file_post.html">upload_page</a>
-<a href="./test2_file_list.html">list_page</a>
 
 </body>
 </html>
